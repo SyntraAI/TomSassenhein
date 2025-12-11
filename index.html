@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <title>TomSassenhein</title>
+  <meta name="company-description" content="Bier drinken ">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      background: linear-gradient(135deg, #e0f0ff, #f5f9ff);
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px 10px 30px 10px;
+      box-sizing: border-box;
+    }
+
+    .chat-box {
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 14px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      width: 100%;
+      max-width: 600px;
+      text-align: center;
+      margin-bottom: 20px;
+      border-top: 4px solid #1e90ff;
+      box-sizing: border-box;
+    }
+
+    img.logo {
+      width: 130px;
+      max-width: 60%;
+      height: auto;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      color: #0056b3;
+      margin: 10px 0 5px 0;
+      font-size: 26px;
+      line-height: 1.2;
+    }
+
+    h2 {
+      color: #4a4a4a;
+      margin-top: 0;
+      margin-bottom: 10px;
+      font-size: 14px;
+      font-weight: normal;
+      line-height: 1.4;
+    }
+
+    input,
+    button {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      margin-bottom: 10px;
+      border-radius: 6px;
+      border: 1px solid #b0c9ff;
+      box-sizing: border-box;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #1e90ff;
+      box-shadow: 0 0 0 2px rgba(30, 144, 255, 0.2);
+    }
+
+    button {
+      background-color: #1e90ff;
+      color: white;
+      cursor: pointer;
+      border: none;
+      font-weight: bold;
+      letter-spacing: 0.3px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    pre {
+      margin-top: 15px;
+      text-align: left;
+      background-color: #eef4ff;
+      padding: 12px;
+      border-radius: 6px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      min-height: 50px;
+      border: 1px solid #d0defc;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+
+    /* Extra tuning voor kleine schermen */
+    @media (max-width: 480px) {
+      body {
+        padding: 15px 8px 25px 8px;
+      }
+
+      .chat-box {
+        padding: 16px;
+        margin-bottom: 15px;
+      }
+
+      h1 {
+        font-size: 22px;
+      }
+
+      h2 {
+        font-size: 13px;
+      }
+
+      input,
+      button {
+        font-size: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Chat met Digitale Assistent (enige zichtbare use case) -->
+  <div class="chat-box">
+    <img class="logo" src="IMG_8819.png" alt="TomSassenhein logo" />
+    <h1>TomSassenhein</h1>
+    <h2>TomSassenhein – stel je vraag aan onze digitale assistent</h2>
+
+    <input id="userInput" placeholder="Typ hier je vraag..." />
+    <button onclick="sendToGPT()">Verstuur</button>
+    <pre id="response">Antwoord verschijnt hier...</pre>
+  </div>
+
+  <script>
+    const companyName = "TomSassenhein";
+    const companyDescription = document.querySelector('meta[name="company-description"]').content;
+
+    // Chat functie
+    async function sendToGPT() {
+      const input = document.getElementById("userInput").value;
+      const responseEl = document.getElementById("response");
+      responseEl.innerText = "Even nadenken...";
+
+      try {
+        const res = await fetch("https://hook.eu2.make.com/kp9mo3585t2jdi1y9q22tinlr7dkca9a", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            company_name: companyName,
+            company_description: companyDescription,
+            message: input
+          })
+        });
+
+        const reply = await res.text();
+        responseEl.innerText = reply || "Geen antwoord ontvangen.";
+      } catch (err) {
+        responseEl.innerText = "Fout: " + err.message;
+      }
+    }
+  </script>
+</body>
+</html>
